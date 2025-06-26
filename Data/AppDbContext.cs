@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ScrumProjectManager.Data.Entities;
+
 namespace ScrumProjectManager.Data
 {
     public class AppDbContext : DbContext
@@ -10,5 +11,16 @@ namespace ScrumProjectManager.Data
         public DbSet<Sprint> Sprints { get; set; }
         public DbSet<TaskItem> Tasks { get; set; }
         public DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<TaskItem>()
+                .HasOne(t => t.AssignedUser)
+                .WithMany() 
+                .HasForeignKey(t => t.AssignedUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

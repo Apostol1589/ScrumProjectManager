@@ -34,6 +34,9 @@ namespace ScrumProjectManager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
@@ -75,6 +78,9 @@ namespace ScrumProjectManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AssignedUserId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SprintId")
                         .HasColumnType("int");
 
@@ -87,6 +93,8 @@ namespace ScrumProjectManager.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssignedUserId");
 
                     b.HasIndex("SprintId");
 
@@ -127,11 +135,19 @@ namespace ScrumProjectManager.Migrations
 
             modelBuilder.Entity("ScrumProjectManager.Data.Entities.TaskItem", b =>
                 {
+                    b.HasOne("ScrumProjectManager.Data.Entities.User", "AssignedUser")
+                        .WithMany()
+                        .HasForeignKey("AssignedUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ScrumProjectManager.Data.Entities.Sprint", "Sprint")
                         .WithMany("Tasks")
                         .HasForeignKey("SprintId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AssignedUser");
 
                     b.Navigation("Sprint");
                 });

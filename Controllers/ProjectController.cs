@@ -4,10 +4,12 @@ using ScrumProjectManager.Data.Entities;
 
 namespace ScrumProjectManager.Controllers
 {
+    //[Route("management/[controller]/[action]")]
     public class ProjectController : Controller
     {
         private readonly IProjectService _projectService;
 
+        
         public ProjectController(IProjectService projectService)
         {
             _projectService = projectService;

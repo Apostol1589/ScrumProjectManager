@@ -17,7 +17,8 @@ namespace ScrumProjectManager.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,7 +69,8 @@ namespace ScrumProjectManager.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SprintId = table.Column<int>(type: "int", nullable: false)
+                    SprintId = table.Column<int>(type: "int", nullable: false),
+                    AssignedUserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,12 +81,23 @@ namespace ScrumProjectManager.Migrations
                         principalTable: "Sprints",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Tasks_Users_AssignedUserId",
+                        column: x => x.AssignedUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sprints_ProjectId",
                 table: "Sprints",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tasks_AssignedUserId",
+                table: "Tasks",
+                column: "AssignedUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_SprintId",
@@ -99,10 +112,10 @@ namespace ScrumProjectManager.Migrations
                 name: "Tasks");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Sprints");
 
             migrationBuilder.DropTable(
-                name: "Sprints");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Projects");

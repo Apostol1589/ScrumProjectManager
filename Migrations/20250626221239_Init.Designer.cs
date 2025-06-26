@@ -12,7 +12,7 @@ using ScrumProjectManager.Data;
 namespace ScrumProjectManager.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250626204950_Init")]
+    [Migration("20250626221239_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -36,6 +36,9 @@ namespace ScrumProjectManager.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -78,6 +81,9 @@ namespace ScrumProjectManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AssignedUserId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SprintId")
                         .HasColumnType("int");
 
@@ -90,6 +96,8 @@ namespace ScrumProjectManager.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssignedUserId");
 
                     b.HasIndex("SprintId");
 
@@ -130,11 +138,19 @@ namespace ScrumProjectManager.Migrations
 
             modelBuilder.Entity("ScrumProjectManager.Data.Entities.TaskItem", b =>
                 {
+                    b.HasOne("ScrumProjectManager.Data.Entities.User", "AssignedUser")
+                        .WithMany()
+                        .HasForeignKey("AssignedUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ScrumProjectManager.Data.Entities.Sprint", "Sprint")
                         .WithMany("Tasks")
                         .HasForeignKey("SprintId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AssignedUser");
 
                     b.Navigation("Sprint");
                 });

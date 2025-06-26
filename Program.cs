@@ -1,3 +1,8 @@
+using System;
+using Microsoft.EntityFrameworkCore;
+using ScrumProjectManager.Business.Interfaces;
+using ScrumProjectManager.Business.Services;
+using ScrumProjectManager.Data;
 namespace ScrumProjectManager
 {
     public class Program
@@ -8,6 +13,13 @@ namespace ScrumProjectManager
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+            builder.Services.AddScoped<IProjectService, ProjectService>();
+
 
             var app = builder.Build();
 
@@ -28,7 +40,8 @@ namespace ScrumProjectManager
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Project}/{action=Index}/{id?}");
+            
 
             app.Run();
         }

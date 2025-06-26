@@ -1,0 +1,29 @@
+﻿@model List<ScrumProjectManager.Data.Entities.Sprint>
+@{
+    ViewData["Title"] = "Sprints";
+}
+
+<h2>Sprint List</h2>
+<a href="/Sprint/Create" class="btn btn-primary mb-3">Create Sprint</a>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Project</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sprint in Model)
+        {
+            <tr>
+                <td>@sprint.Name</td>
+                <td>@sprint.StartDate.ToShortDateString()</td>
+                <td>@sprint.EndDate.ToShortDateString()</td>
+                <td>@sprint.Project?.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>

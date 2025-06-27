@@ -1,43 +1,41 @@
 ﻿@model ScrumProjectManager.Data.Entities.Sprint
 @{
-    ViewData["Title"] = "Create Sprint";
-    var projects = ViewBag.Projects as List<ScrumProjectManager.Data.Entities.Project>;
+    ViewData["Title"] = "Edit Sprint";
 }
 
-<h2>Create New Sprint</h2>
+<h2>@ViewData["Title"]</h2>
 
-<form asp-action="Create" method="post">
+<form asp-action="@ViewContext.RouteData.Values["action"]" method="post">
+    @if (Model.Id != 0)
+    {
+        <input type="hidden" asp-for="Id" />
+    }
+
     <div class="mb-3">
-        <label asp-for="Name" class="form-label">Sprint Name</label>
+        <label asp-for="Name" class="form-label"></label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="StartDate" class="form-label">Start Date</label>
+        <label asp-for="StartDate" class="form-label"></label>
         <input asp-for="StartDate" class="form-control" type="date" />
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="EndDate" class="form-label">End Date</label>
+        <label asp-for="EndDate" class="form-label"></label>
         <input asp-for="EndDate" class="form-control" type="date" />
         <span asp-validation-for="EndDate" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="ProjectId" class="form-label">Project</label>
-        <select asp-for="ProjectId" class="form-select">
-            <option value="">-- Select project --</option>
-            @foreach (var project in projects!)
-            {
-                <option value="@project.Id">@project.Name</option>
-            }
-        </select>
+        <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.Projects"></select>
         <span asp-validation-for="ProjectId" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-success">Create</button>
+    <button type="submit" class="btn btn-success">Save</button>
     <a asp-action="Index" class="btn btn-secondary">Back</a>
 </form>
 

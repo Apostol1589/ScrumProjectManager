@@ -22,6 +22,24 @@ namespace ScrumProjectManager.Business.Services
             await _context.SaveChangesAsync();
             return project;
         }
+
+        public async Task<Project> UpdateAsync(Project project)
+        {
+            _context.Projects.Update(project);
+            await _context.SaveChangesAsync();
+            return project;
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var project = await _context.Projects.FindAsync(id);
+            if (project != null)
+            {
+                _context.Projects.Remove(project);
+                await _context.SaveChangesAsync();
+            }
+        }
+
     }
 
 }

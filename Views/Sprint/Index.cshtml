@@ -4,7 +4,7 @@
 }
 
 <h2>Sprint List</h2>
-<a href="/Sprint/Create" class="btn btn-primary mb-3">Create Sprint</a>
+<a asp-action="Create" class="btn btn-primary mb-3">Create Sprint</a>
 
 <table class="table table-bordered table-striped">
     <thead class="table-dark">
@@ -13,6 +13,7 @@
             <th>Start</th>
             <th>End</th>
             <th>Project</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,12 @@
                 <td>@sprint.StartDate.ToShortDateString()</td>
                 <td>@sprint.EndDate.ToShortDateString()</td>
                 <td>@sprint.Project?.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@sprint.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@sprint.Id" method="post" style="display:inline;" onsubmit="return confirm('Delete this sprint?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>

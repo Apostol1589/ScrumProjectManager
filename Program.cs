@@ -19,6 +19,8 @@ namespace ScrumProjectManager
 
 
             builder.Services.AddScoped<IProjectService, ProjectService>();
+            builder.Services.AddScoped<ISprintService, SprintService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
 
             var app = builder.Build();

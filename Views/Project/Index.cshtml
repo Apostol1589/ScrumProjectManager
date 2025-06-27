@@ -1,26 +1,24 @@
-﻿@model List<ScrumProjectManager.Data.Entities.Project>
+﻿@using ScrumProjectManager.Resources
+@model List<ScrumProjectManager.Data.Entities.Project>
 @{
-    ViewData["Title"] = "Project List";
+    ViewData["Title"] = Views.Project_Title;
 }
-
-<h2>All Projects</h2>
-
-<a asp-action="Create" class="btn btn-primary mb-3">Create New Project</a>
-
+<h2>@Views.Project_Title</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">@Views.Project_Create</a>
 @if (!Model.Any())
 {
-    <div class="alert alert-info">No projects found.</div>
+    <div class="alert alert-info">@Views.Project_NoProjects</div>
 }
 else
 {
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Start Date</th>
-                <th>Sprint Count</th>
-                <th>Actions</th>
+                <th>@Views.Project_ID</th>
+                <th>@Views.Project_Name</th>
+                <th>@Views.Project_StartDate</th>
+                <th>@Views.Project_SprintCount</th>
+                <th>@Views.Project_Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -32,9 +30,9 @@ else
                     <td>@project.StartDate.ToShortDateString()</td>
                     <td>@project.Sprints?.Count ?? 0</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@project.Id" class="btn btn-sm btn-warning">Edit</a>
-                        <form asp-action="Delete" asp-route-id="@project.Id" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this project?');">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        <a asp-action="Edit" asp-route-id="@project.Id" class="btn btn-sm btn-warning">@Views.Project_Edit</a>
+                        <form asp-action="Delete" asp-route-id="@project.Id" method="post" style="display:inline;" onsubmit="return confirm('@Views.Project_Delete_Confirm');">
+                            <button type="submit" class="btn btn-sm btn-danger">@Views.Project_Delete</button>
                         </form>
                     </td>
                 </tr>

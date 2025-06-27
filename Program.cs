@@ -1,4 +1,6 @@
 using System;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using ScrumProjectManager.Business.Interfaces;
 using ScrumProjectManager.Business.Services;
@@ -22,8 +24,31 @@ namespace ScrumProjectManager
             builder.Services.AddScoped<ISprintService, SprintService>();
             builder.Services.AddScoped<IUserService, UserService>();
 
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            builder.Services.AddControllersWithViews()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
+
+            var supportedCultures = new[] { "en", "uk" };
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new RequestCulture("en");
+                options.SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+                options.SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+            });
+
 
             var app = builder.Build();
+
+            var localizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en"),
+                SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList(),
+                SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList()
+            };
+
+            app.UseRequestLocalization(localizationOptions);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

@@ -1,27 +1,27 @@
-﻿@model ScrumProjectManager.Data.Entities.User
+﻿@using ScrumProjectManager.Resources
+@model ScrumProjectManager.Data.Entities.User
 @{
-    ViewData["Title"] = "Create User";
+    ViewData["Title"] = ViewContext.RouteData.Values["action"].ToString() == "Edit" ? Views.Project_Edit : Views.User_Add;
 }
-
-<h2>Create New User</h2>
-
-<form asp-action="Create" method="post">
+<h2>@ViewData["Title"]</h2>
+<form asp-action="@ViewContext.RouteData.Values["action"]" method="post">
+    @if (Model.Id != 0)
+    {
+        <input type="hidden" asp-for="Id" />
+    }
     <div class="mb-3">
-        <label asp-for="FullName" class="form-label">Full Name</label>
+        <label asp-for="FullName" class="form-label">@Views.User_FullName</label>
         <input asp-for="FullName" class="form-control" />
         <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
-        <label asp-for="Role" class="form-label">Role</label>
+        <label asp-for="Role" class="form-label">@Views.User_Role</label>
         <input asp-for="Role" class="form-control" />
         <span asp-validation-for="Role" class="text-danger"></span>
     </div>
-
-    <button type="submit" class="btn btn-success">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Back</a>
+    <button type="submit" class="btn btn-success">@Views.Button_Save</button>
+    <a asp-action="Index" class="btn btn-secondary">@Views.Button_Back</a>
 </form>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

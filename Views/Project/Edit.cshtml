@@ -1,29 +1,27 @@
-﻿@model ScrumProjectManager.Data.Entities.Project
+﻿@using ScrumProjectManager.Resources
+@model ScrumProjectManager.Data.Entities.Project
 @{
-    ViewData["Title"] = "Edit Project";
+    ViewData["Title"] = ViewContext.RouteData.Values["action"].ToString() == "Edit" ? Views.Project_Edit : Views.Project_Create;
 }
-
-<h2>Edit Project</h2>
-
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-
+<h2>@ViewData["Title"]</h2>
+<form asp-action="@ViewContext.RouteData.Values["action"]" method="post">
+    @if (Model.Id != 0)
+    {
+        <input type="hidden" asp-for="Id" />
+    }
     <div class="mb-3">
-        <label asp-for="Name" class="form-label">Project Name</label>
+        <label asp-for="Name" class="form-label">@Views.Project_Name</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
-        <label asp-for="StartDate" class="form-label">Start Date</label>
-        <input asp-for="StartDate" class="form-control" type="date" />
+        <label asp-for="StartDate" class="form-label">@Views.Project_StartDate</label>
+        <input asp-for="StartDate" type="date" class="form-control" />
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Back</a>
+    <button type="submit" class="btn btn-success">@Views.Button_Save</button>
+    <a asp-action="Index" class="btn btn-secondary">@Views.Button_Back</a>
 </form>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

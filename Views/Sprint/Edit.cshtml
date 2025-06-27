@@ -1,44 +1,44 @@
-﻿@model ScrumProjectManager.Data.Entities.Sprint
+﻿@using ScrumProjectManager.Resources
+@model ScrumProjectManager.Data.Entities.Sprint
 @{
-    ViewData["Title"] = "Edit Sprint";
+    ViewData["Title"] = ViewContext.RouteData.Values["action"].ToString() == "Edit" ? Views.Project_Edit : Views.Sprint_Create;
+    var projects = ViewBag.Projects as List<ScrumProjectManager.Data.Entities.Project>;
 }
-
 <h2>@ViewData["Title"]</h2>
-
 <form asp-action="@ViewContext.RouteData.Values["action"]" method="post">
     @if (Model.Id != 0)
     {
         <input type="hidden" asp-for="Id" />
     }
-
     <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
+        <label asp-for="Name" class="form-label">@Views.Sprint_Name</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
-        <label asp-for="StartDate" class="form-label"></label>
+        <label asp-for="StartDate" class="form-label">@Views.Sprint_Start</label>
         <input asp-for="StartDate" class="form-control" type="date" />
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
-        <label asp-for="EndDate" class="form-label"></label>
+        <label asp-for="EndDate" class="form-label">@Views.Sprint_End</label>
         <input asp-for="EndDate" class="form-control" type="date" />
         <span asp-validation-for="EndDate" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
-        <label asp-for="ProjectId" class="form-label">Project</label>
-        <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.Projects"></select>
+        <label asp-for="ProjectId" class="form-label">@Views.Sprint_Project</label>
+        <select asp-for="ProjectId" class="form-select">
+            <option value="">-- @Views.Sprint_Project --</option>
+            @foreach (var project in projects!)
+            {
+                <option value="@project.Id">@project.Name</option>
+            }
+        </select>
         <span asp-validation-for="ProjectId" class="text-danger"></span>
     </div>
-
-    <button type="submit" class="btn btn-success">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Back</a>
+    <button type="submit" class="btn btn-success">@Views.Button_Save</button>
+    <a asp-action="Index" class="btn btn-secondary">@Views.Button_Back</a>
 </form>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
